@@ -66,14 +66,17 @@
 
 <div class="admin-panel" id="adminPanel">
   <h2>Admin Panel</h2>
-  <div class="action" onclick="changeHero()">Ändra Hero Text</div>
-  <div class="action" onclick="changeContact()">Ändra Kontakt Text</div>
+
+  <div class="action" onclick="editHero()">Ändra Hero Text/Bild</div>
+  <div class="action" onclick="editGallery()">Redigera Galleri</div>
+  <div class="action" onclick="editContact()">Ändra Kontakt Text</div>
+  <div class="action" onclick="editMenu()">Ändra Meny Flikar</div>
+  <div class="action" onclick="editServer()">Ändra Serverstatus</div>
   <div class="action" onclick="location.href='index.html'">Tillbaka till sidan</div>
 </div>
 
 <script>
 const PASSWORD="1234";
-
 function login(){
   const input=document.getElementById("pass").value;
   if(input===PASSWORD){
@@ -84,20 +87,54 @@ function login(){
   }
 }
 
-function changeHero(){
-  const newTitle = prompt("Skriv ny hero-titel:");
-  const newSubtitle = prompt("Skriv ny hero-subtitle:");
-  const newText = prompt("Skriv ny hero-text:");
+// Admin funktioner
+function editHero(){
+  const newTitle = prompt("Ny hero titel:");
+  const newSubtitle = prompt("Ny hero subtitle:");
+  const newText = prompt("Ny hero text:");
+  const newBg = prompt("Ny bakgrundsbild (filnamn i /img/):");
   if(newTitle) localStorage.setItem("heroTitle", newTitle);
   if(newSubtitle) localStorage.setItem("heroSubtitle", newSubtitle);
   if(newText) localStorage.setItem("heroText", newText);
+  if(newBg) localStorage.setItem("heroBg", newBg);
   alert("Hero uppdaterad! Gå tillbaka till hemsidan.");
 }
 
-function changeContact(){
-  const newContact = prompt("Skriv ny kontakttext:");
+function editGallery(){
+  const index = prompt("Vilken bild vill du ändra? (1,2,3...)");
+  const newTitle = prompt("Ny bild titel:");
+  const newDesc = prompt("Ny beskrivning:");
+  const newImg = prompt("Ny bildfil (img/imgX.jpg):");
+  if(newTitle) localStorage.setItem("galleryTitle"+index,newTitle);
+  if(newDesc) localStorage.setItem("galleryDesc"+index,newDesc);
+  if(newImg) localStorage.setItem("galleryImg"+index,newImg);
+  alert("Galleri uppdaterad! Gå tillbaka till hemsidan.");
+}
+
+function editContact(){
+  const newContact = prompt("Ny kontakttext:");
   if(newContact) localStorage.setItem("contactText", newContact);
   alert("Kontakt uppdaterad! Gå tillbaka till hemsidan.");
+}
+
+function editMenu(){
+  const home = prompt("Ny text för Hem:");
+  const gallery = prompt("Ny text för Galleri:");
+  const lore = prompt("Ny text för Lore:");
+  const contact = prompt("Ny text för Kontakt:");
+  if(home) localStorage.setItem("menuHome",home);
+  if(gallery) localStorage.setItem("menuGallery",gallery);
+  if(lore) localStorage.setItem("menuLore",lore);
+  if(contact) localStorage.setItem("menuContact",contact);
+  alert("Meny uppdaterad! Gå tillbaka till hemsidan.");
+}
+
+function editServer(){
+  const status = prompt("Ny serverstatus (Online/Offline):");
+  const players = prompt("Antal spelare online (t.ex 12/100):");
+  if(status) localStorage.setItem("serverStatus",status);
+  if(players) localStorage.setItem("serverPlayers",players);
+  alert("Serverstatus uppdaterad! Gå tillbaka till hemsidan.");
 }
 </script>
 
