@@ -8,15 +8,15 @@
 <link rel="stylesheet" href="style.css">
 <style>
 .admin-login-box, .admin-panel {
-  max-width: 500px;
-  margin: 80px auto;
+  max-width: 600px;
+  margin: 60px auto;
   background: rgba(42,42,42,0.95);
   padding: 30px;
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 6px 20px rgba(0,0,0,0.5);
 }
-.admin-login-box input {
+.admin-login-box input, .admin-login-box button {
   width: 80%;
   padding: 12px;
   margin-top: 15px;
@@ -24,18 +24,13 @@
   border: none;
   font-size: 16px;
 }
-.admin-login-box button, .admin-panel button {
-  margin-top: 20px;
-  padding: 12px 20px;
+.admin-login-box button {
   background:#69c9d0;
-  border:none;
-  border-radius:6px;
+  color:white;
   font-weight:bold;
   cursor:pointer;
 }
-.admin-login-box button:hover, .admin-panel button:hover {
-  filter: brightness(1.2);
-}
+.admin-login-box button:hover { filter: brightness(1.2);}
 .admin-panel {display:none;}
 .admin-panel .action {
   background:#334155;
@@ -68,13 +63,14 @@
   <h2>Admin Panel</h2>
 
   <div class="action" onclick="editHero()">Ändra Hero Text/Bild</div>
-  <div class="action" onclick="editGallery()">Redigera Galleri</div>
+  <div class="action" onclick="editGallery()">Hantera Galleri</div>
   <div class="action" onclick="editContact()">Ändra Kontakt Text</div>
   <div class="action" onclick="editMenu()">Ändra Meny Flikar</div>
   <div class="action" onclick="editServer()">Ändra Serverstatus</div>
   <div class="action" onclick="location.href='index.html'">Tillbaka till sidan</div>
 </div>
 
+<script src="script.js"></script>
 <script>
 const PASSWORD="1234";
 function login(){
@@ -87,34 +83,50 @@ function login(){
   }
 }
 
-// Admin funktioner
+// Adminfunktioner
 function editHero(){
   const newTitle = prompt("Ny hero titel:");
   const newSubtitle = prompt("Ny hero subtitle:");
   const newText = prompt("Ny hero text:");
-  const newBg = prompt("Ny bakgrundsbild (filnamn i /img/):");
+  const newBg = prompt("Ny bakgrundsbild (img/filnamn.jpg):");
   if(newTitle) localStorage.setItem("heroTitle", newTitle);
   if(newSubtitle) localStorage.setItem("heroSubtitle", newSubtitle);
   if(newText) localStorage.setItem("heroText", newText);
   if(newBg) localStorage.setItem("heroBg", newBg);
-  alert("Hero uppdaterad! Gå tillbaka till hemsidan.");
+  alert("Hero uppdaterad!");
 }
 
 function editGallery(){
-  const index = prompt("Vilken bild vill du ändra? (1,2,3...)");
-  const newTitle = prompt("Ny bild titel:");
-  const newDesc = prompt("Ny beskrivning:");
-  const newImg = prompt("Ny bildfil (img/imgX.jpg):");
-  if(newTitle) localStorage.setItem("galleryTitle"+index,newTitle);
-  if(newDesc) localStorage.setItem("galleryDesc"+index,newDesc);
-  if(newImg) localStorage.setItem("galleryImg"+index,newImg);
-  alert("Galleri uppdaterad! Gå tillbaka till hemsidan.");
+  let action = prompt("Skriv 'lägg till' för ny bild eller 'ta bort' för att ta bort bild:");
+  const fridge = document.getElementById("gallery-fridge");
+  if(action==="lägg till"){
+    const img = prompt("Bildfil (img/fil.jpg):");
+    const title = prompt("Titel:");
+    const desc = prompt("Beskrivning:");
+    if(img){
+      const div = document.createElement("div");
+      div.className="photo";
+      div.dataset.title = title||"Ny bild";
+      div.dataset.desc = desc||"Beskrivning";
+      div.innerHTML = `<img src="${img}" alt="${title}"><p>${title}</p>`;
+      fridge.appendChild(div);
+      localStorage.setItem("galleryHTML", fridge.innerHTML);
+    }
+  } else if(action==="ta bort"){
+    const index = prompt("Vilken bild vill du ta bort? Skriv 1 för första bilden osv:");
+    const photos = fridge.querySelectorAll(".photo");
+    if(photos[index-1]){
+      photos[index-1].remove();
+      localStorage.setItem("galleryHTML", fridge.innerHTML);
+    }
+  }
+  alert("Galleri uppdaterat!");
 }
 
 function editContact(){
   const newContact = prompt("Ny kontakttext:");
   if(newContact) localStorage.setItem("contactText", newContact);
-  alert("Kontakt uppdaterad! Gå tillbaka till hemsidan.");
+  alert("Kontakt uppdaterad!");
 }
 
 function editMenu(){
@@ -126,7 +138,7 @@ function editMenu(){
   if(gallery) localStorage.setItem("menuGallery",gallery);
   if(lore) localStorage.setItem("menuLore",lore);
   if(contact) localStorage.setItem("menuContact",contact);
-  alert("Meny uppdaterad! Gå tillbaka till hemsidan.");
+  alert("Meny uppdaterad!");
 }
 
 function editServer(){
@@ -134,9 +146,8 @@ function editServer(){
   const players = prompt("Antal spelare online (t.ex 12/100):");
   if(status) localStorage.setItem("serverStatus",status);
   if(players) localStorage.setItem("serverPlayers",players);
-  alert("Serverstatus uppdaterad! Gå tillbaka till hemsidan.");
+  alert("Serverstatus uppdaterad!");
 }
 </script>
-
 </body>
 </html>
