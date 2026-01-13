@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nordic Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.admin-login-box, .admin-panel {
+  max-width: 500px;
+  margin: 80px auto;
+  background: rgba(42,42,42,0.95);
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+.admin-login-box input {
+  width: 80%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+}
+.admin-login-box button, .admin-panel button {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background:#69c9d0;
+  border:none;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.admin-login-box button:hover, .admin-panel button:hover {
+  filter: brightness(1.2);
+}
+.admin-panel {display:none;}
+.admin-panel .action {
+  background:#334155;
+  margin:10px 0;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.admin-panel .action:hover {background:#69c9d0;color:black;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-container">
+    <a href="index.html" class="logo">Nordic</a>
+  </div>
+</header>
+
+<div class="admin-login-box" id="loginBox">
+  <h2>Admin Login</h2>
+  <input type="password" id="pass" placeholder="Lösenord">
+  <br>
+  <button onclick="login()">Logga in</button>
+  <p id="error" style="color:red;margin-top:10px;"></p>
+</div>
+
+<div class="admin-panel" id="adminPanel">
+  <h2>Admin Panel</h2>
+  <div class="action" onclick="changeHero()">Ändra Hero Text</div>
+  <div class="action" onclick="changeContact()">Ändra Kontakt Text</div>
+  <div class="action" onclick="location.href='index.html'">Tillbaka till sidan</div>
+</div>
+
+<script>
+const PASSWORD="1234";
+
+function login(){
+  const input=document.getElementById("pass").value;
+  if(input===PASSWORD){
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("adminPanel").style.display="block";
+  } else {
+    document.getElementById("error").textContent="Fel lösenord!";
+  }
+}
+
+function changeHero(){
+  const newTitle = prompt("Skriv ny hero-titel:");
+  const newSubtitle = prompt("Skriv ny hero-subtitle:");
+  const newText = prompt("Skriv ny hero-text:");
+  if(newTitle) localStorage.setItem("heroTitle", newTitle);
+  if(newSubtitle) localStorage.setItem("heroSubtitle", newSubtitle);
+  if(newText) localStorage.setItem("heroText", newText);
+  alert("Hero uppdaterad! Gå tillbaka till hemsidan.");
+}
+
+function changeContact(){
+  const newContact = prompt("Skriv ny kontakttext:");
+  if(newContact) localStorage.setItem("contactText", newContact);
+  alert("Kontakt uppdaterad! Gå tillbaka till hemsidan.");
+}
+</script>
+
+</body>
+</html>
